@@ -6,6 +6,7 @@ using DG.Tweening;
 public class AttackerCanvas : MonoBehaviour
 {
     public DeadLine line;
+    public BrickPlayer player;
     private CanvasGroup group;
     private bool invoked = false;
 
@@ -23,6 +24,7 @@ public class AttackerCanvas : MonoBehaviour
     {
         if (invoked)
             return;
+        player.OnDie.RemoveAllListeners();
         invoked = true;
         SceneAudioManager.instance.PlayByName("Gameover");
         SceneAudioManager.instance.VolumeChange("Scene_1_bgm",0,0.5f);

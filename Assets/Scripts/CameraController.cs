@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     
     [HideInInspector]
     public UnityEvent Phase2 = new UnityEvent();
-    private int Phase3Count = 31;
+    private int Phase3Count = 30;
     private int Phase4Count = 62;
 
     private void Awake()
@@ -56,7 +56,7 @@ public class CameraController : MonoBehaviour
                 kill = new Vector2(Random.Range(-12, 13), Random.Range(-4, 8));
             previousKill = kill;
             GameObject go = Instantiate(killBlock, kill, Quaternion.identity);
-            go.GetComponent<KillBlock>().beatToKill = Phase3Count + 1;
+            go.GetComponent<KillBlock>().beatToKill = Phase3Count + 2;
             go.transform.SetParent(Fall.instance.transform);
             go.transform.localPosition = new Vector3(go.transform.localPosition.x, Mathf.FloorToInt(go.transform.localPosition.y));
             Phase3Count++;
