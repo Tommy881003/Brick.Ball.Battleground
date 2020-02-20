@@ -36,6 +36,7 @@ public class Fall : MonoBehaviour
     private void Start()
     {
         Camera.main.gameObject.GetComponent<CameraController>().Phase2.AddListener(StartUp);
+        Camera.main.gameObject.GetComponent<CameraController>().StartEnd.AddListener(end);
         height = (int)Camera.main.orthographicSize;
         seed = Random.Range(0.1f, 100f);
         enabled = false;
@@ -44,6 +45,11 @@ public class Fall : MonoBehaviour
     private void StartUp()
     {
         enabled = true;
+    }
+
+    void end()
+    {
+        enabled = false;
     }
 
     private void FixedUpdate()

@@ -25,6 +25,7 @@ public class AttackerCanvas : MonoBehaviour
         if (invoked)
             return;
         player.OnDie.RemoveAllListeners();
+        Camera.main.gameObject.GetComponent<CameraController>().End.RemoveAllListeners();
         invoked = true;
         SceneAudioManager.instance.PlayByName("Gameover");
         SceneAudioManager.instance.VolumeChange("Scene_1_bgm",0,0.5f);

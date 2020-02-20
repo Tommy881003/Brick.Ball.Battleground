@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class DefenderCanvas : MonoBehaviour
+public class TieCanvas : MonoBehaviour
 {
-    public DeadLine line;
-    public BrickPlayer player;
     private CanvasGroup group;
     private bool invoked = false;
 
@@ -17,23 +15,20 @@ public class DefenderCanvas : MonoBehaviour
         group.alpha = 0;
         group.blocksRaycasts = false;
         group.interactable = false;
-        player.OnDie.AddListener(ShowCanvas);
+        Camera.main.gameObject.GetComponent<CameraController>().End.AddListener(ShowCanvas);
     }
 
     void ShowCanvas()
     {
         if (invoked)
             return;
-        line.OnBrickEnter.RemoveAllListeners();
-        Camera.main.gameObject.GetComponent<CameraController>().End.RemoveAllListeners();
         invoked = true;
-        SceneAudioManager.instance.PlayByName("Gameover");
-        SceneAudioManager.instance.VolumeChange("Scene_1_bgm", 0, 0.5f);
         StartCoroutine(StartShowing());
     }
 
     IEnumerator StartShowing()
     {
+        SceneAudioManager.instance.VolumeChange("Scene_1_bgm", 0, 0.5f);
         DOTween.To(() => group.alpha, x => group.alpha = x, 1, 0.5f).SetUpdate(true);
         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.5f).SetUpdate(true);
         yield return new WaitForSecondsRealtime(0.5f);

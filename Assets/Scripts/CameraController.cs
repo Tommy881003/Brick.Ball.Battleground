@@ -28,8 +28,13 @@ public class CameraController : MonoBehaviour
     
     [HideInInspector]
     public UnityEvent Phase2 = new UnityEvent();
-    private int Phase3Count = 30;
-    private int Phase4Count = 62;
+    [HideInInspector]
+    public UnityEvent StartEnd = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent End = new UnityEvent();
+    private int endCount = 240;
+    private int Phase3Count = 46;
+    private int Phase4Count = 78;
 
     private void Awake()
     {
@@ -50,7 +55,15 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (beatProgress >= Phase3Count)
+        if(beatProgress >= endCount)
+        {
+            StartEnd.Invoke();
+            StartCoroutine(end());
+            enabled = false;
+        }
+        if (Time.timeScale == 0)
+            enabled = false;
+        if (Phase3Count + 2 <= endCount && beatProgress >= Phase3Count)
         {
             while(Mathf.Abs(kill.x - previousKill.x) < 2 || Mathf.Abs(kill.y - previousKill.y) < 2)
                 kill = new Vector2(Random.Range(-12, 13), Random.Range(-4, 8));
@@ -62,7 +75,7 @@ public class CameraController : MonoBehaviour
             Phase3Count++;
         }
 
-        if (beatProgress >= Phase4Count)
+        if (Phase4Count + 2 <= endCount && beatProgress >= Phase4Count)
         {
             float rand = Random.Range(0f, 1f);
             GameObject go = null;
@@ -73,12 +86,12 @@ public class CameraController : MonoBehaviour
                 go.transform.localPosition = new Vector3(go.transform.localPosition.x, Mathf.FloorToInt(go.transform.localPosition.y) + 0.5f);
             }
             else
-                go = Instantiate(killVertical, new Vector2(Random.Range(-12, 12),1), Quaternion.identity);
+                go = Instantiate(killVertical, new Vector2(Random.Range(-14, 14) + 0.5f,1), Quaternion.identity);
             go.GetComponent<KillBlock>().beatToKill = Phase4Count + 2;
             Phase4Count += 2;
         }
 
-        if (beatProgress >= beatCount)
+        if (beatCount + 2 <= endCount && beatProgress >= beatCount)
         {
             cam.transform.position = new Vector3(0.3f, 0, -10);
             cam.transform.DOMoveX(0, 0.25f).SetEase(shakeEase);
@@ -100,5 +113,11 @@ public class CameraController : MonoBehaviour
         enabled = true;
         music.Play();
         startTime = AudioSettings.dspTime;
+    }
+
+    IEnumerator end()
+    {
+        yield return new WaitForSeconds(1f);
+        End.Invoke();
     }
 }

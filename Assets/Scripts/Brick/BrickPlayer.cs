@@ -46,6 +46,7 @@ public class BrickPlayer : MonoBehaviour
         playerAudio = GetComponent<ObjAudioManager>();
         line.OnPlayerEnter.AddListener(Suicide);
         SceneAudioManager.instance.OnGo.AddListener(StartUp);
+        Camera.main.gameObject.GetComponent<CameraController>().End.AddListener(end);
         enabled = false;
     }
 
@@ -170,5 +171,11 @@ public class BrickPlayer : MonoBehaviour
     void StartUp()
     {
         enabled = true;
+    }
+
+    void end()
+    {
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        enabled = false;
     }
 }

@@ -38,6 +38,7 @@ public class Turret : MonoBehaviour
         fireTime = 1 / property.fireRate; //週期 = 頻率的倒數
         timer = 0; //冷卻歸零
         SceneAudioManager.instance.OnGo.AddListener(StartUp);
+        Camera.main.gameObject.GetComponent<CameraController>().StartEnd.AddListener(end);
         enabled = false;
     }
 
@@ -129,5 +130,10 @@ public class Turret : MonoBehaviour
     void StartUp()
     {
         enabled = true;
+    }
+
+    void end()
+    {
+        enabled = false;
     }
 }
